@@ -1,0 +1,482 @@
+\documentclass[xcolor=svgnames, t]{beamer} 
+\usepackage[utf8]{inputenc}
+\usepackage{booktabs, comment} 
+\usepackage[absolute, overlay]{textpos} 
+\usepackage{pgfpages}
+\usepackage[font=footnotesize]{caption}
+\useoutertheme{infolines} 
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{tcolorbox} 
+
+\definecolor{gold}{RGB}{254, 206, 0}
+
+\setbeamercolor{title in head/foot}{bg=gold, fg=black}
+\setbeamercolor{author in head/foot}{bg=myuniversity}
+\setbeamertemplate{page number in head/foot}{}
+\usepackage{csquotes}
+
+
+\usepackage{amsmath}
+\usepackage{textpos}
+\usetheme{Darmstadt}
+\definecolor{myuniversity}{RGB}{0, 85, 150}
+\usecolortheme[named=myuniversity]{structure}
+
+%%%%%%%% THEOREMS %%%%%%%%%%%%
+\theoremstyle{definition}
+\newtheorem{df}{Definition}
+\theoremstyle{plain}
+\newtheorem{prop}{Proposition}
+%\newtheorem{prop}{Proposición}
+\newtheorem{thm}{Theorem}
+%\newtheorem{thm}{Teorema}
+\newtheorem{lm}{Lemma}
+%\newtheorem{lm}{Lema}
+\newtheorem{cor}{Corollary}
+%\newtheorem{cor}{Corolario}
+\theoremstyle{remark}
+\newtheorem{ex}{Example}
+%\newtheorem{ex}{Ejemplo}
+\newtheorem{rem}{Remark}
+%\newtheorem{rem}{Observación}
+%\setbeamertemplate{frametitle continuation}{}
+
+\title[Modelado y Simulación]{Modelado y Simulación}
+\institute[]{Facultad de Matemáticas \\ FUKL}
+\author[Julián Jiménez Cárdenas]{
+Julián Jiménez Cárdenas}
+
+
+\institute[]{Facultad de Matemáticas \\ FUKL}
+
+
+\addtobeamertemplate{navigation symbols}{}{%
+    \usebeamerfont{footline}%
+    \usebeamercolor[fg]{footline}%
+    \hspace{1em}%
+    \insertframenumber/\inserttotalframenumber
+}
+\beamertemplatenavigationsymbolsempty
+\begin{document}
+\begin{frame}
+\maketitle
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\logo{\includegraphics[scale=0.15]{Uandes.jpg}~%
+%}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{frame}[allowframebreaks]{Introduction to Modeling}
+	Mathematical modeling is a powerful tool that:
+
+\begin{itemize}
+    \item Translates real-world problems into mathematical language
+    \item Provides insights into complex systems
+    \item Enables predictions and decision-making
+    \item Facilitates optimization and efficiency
+\end{itemize}
+
+\vspace{0.5cm}
+
+Key applications include:
+\begin{itemize}
+    \item Physics and engineering
+    \item Economics and finance
+    \item Biology and medicine
+    \item Climate science and ecology
+\end{itemize}
+
+Elaborating in some applications, we have
+\begin{itemize}
+    \item \textbf{Celestial Mechanics}
+    \begin{itemize}
+        \item Understanding motion of stars, planets, comets
+        \item Applications in agriculture, navigation, calendars
+        \item Modern astrophysics: universe formation and development
+    \end{itemize}
+    
+    \item \textbf{Energy Supply}
+    \begin{itemize}
+        \item Modeling energy consumption trends
+        \item Planning for future energy needs
+    \end{itemize}
+    
+    \item \textbf{Everyday Scenarios}
+    \begin{itemize}
+        \item E.g., safe driving distances at various speeds
+    \end{itemize}
+    
+    \item \textbf{Climate Change}
+    \begin{itemize}
+        \item Modeling global warming impacts
+        \item Predicting changes in weather patterns
+        \item Assessing human impact on climate
+    \end{itemize}
+\end{itemize}
+    \begin{figure}[]
+    	\centering
+    	\includegraphics[width=0.6\textwidth]{images/climateChange.png}
+	\caption{An illustration of global warming. (a) The HadCRUT3 global temperature anomaly data (consisting of annual differences from 1961-90 normals) are given in $ ^\circ $C (Rayner et al, 2003, Brohan et al, 2006); (b) the Mauna Loa data (Tans 2008) of atmospheric $ CO_2 $ concentrations are given in ppmv. }
+    	\label{fig:images-climateChange-png}
+    \end{figure}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{Linear Models}
+	First we introduce the simplest modeling approach: \textbf{the linear functions}.
+\begin{itemize}
+	\item  Suppose we aim to set a relation between two variables, $ \textbf{x} $ and $ \textbf{y}, $ and we have paired data from these variables of the form
+	$$ \mathcal{D} = \left\{ (x_i,y_i) \ :\ i=1,2,\dots,n  \right\} . $$ 
+\item Thus, we can choose any pair of these points $ (x_i,y_i), (x_j,y_j)\in \mathcal{D} $ with $ i\neq j $ to find the line that passes through these, which algebraically can be written as
+	$$ y(x) = y_i \frac{x-x_j}{x_i-x_j} + y_j \frac{x-x_i}{x_j-x_i}. $$ 
+\item Note that $ y(x_i)=y_i $ and $ y(x_j)=y_j, $ as expected. 
+\end{itemize}
+
+\begin{ex}[U.S. energy comsumption]
+	The following table relates the U.S. energy consumption $ C $ (in $ 10^15 $ Btu) in time $ t $ (U.S. Dept, of Energy 2008).
+	\begin{table}[h]
+		\centering
+		\label{tab:energy}
+	
+		\begin{tabular}{cc}
+			\hline
+			$ t $ & $ C $ \\ \hline
+			$ 1950 $ & $ 34.616 $ \\
+			$ 1955 $ & $ 40.208 $ \\
+			$ 1960 $ & $ 45.087 $ \\
+			$ 1965 $ & $ 54.017 $ \\
+			$ 1970 $ & $ 67.844 $ \\
+			$ 1975 $ & $ 71.999 $ \\
+		\end{tabular}
+		\begin{tabular}{cc}
+			\hline
+			$ t $ & $ C $ \\ \hline
+			$ 1980 $ & $ 78.122 $ \\
+			$ 1985 $ & $ 76.491 $ \\
+			$ 1990 $ & $ 84.652 $ \\
+			$ 1995 $ & $ 91.173 $ \\
+			$ 2000 $ & $ 98.975 $ \\
+			$ 2005 $ & $ 100.506 $ \\
+		\end{tabular}
+\begin{itemize}
+	\item Fit a line passing through the data.
+	\item Graph the error $ e= (y -y^{(mod)})/y^{(mod)}$  of the line with respect to the real data. $ y^{(mod)} $ is the value predicted by the model.
+\end{itemize}
+	\end{table}
+\end{ex}
+\end{frame}
+\begin{frame}{Exponential Model}
+	\begin{ex}[Orbital period and distance]
+		Consider the following data.
+\begin{table}[h]
+	\centering
+	\caption{Orbital periods and mean distances of planets from the Sun (World Almanac 2010). Here $ r $ is the mean distance from the sun in $ 10^9 $ km. $ T_p $ is the period in earth years $ a=365.25 $ days.}
+	\label{tab:label}
+	{\scriptsize
+	\begin{tabular}{ccccccccc}
+\hline
+Planet & Mercury & Venus & Earth & Mars & Jupiter & Saturn & Uranus & Neptune \\
+\hline
+$r$ & 0.0579 & 0.1082 & 0.1496 & 0.2280 & 0.7785 & 1.4335 & 2.8718 & 4.4948 \\
+\hline
+$T_p$ & 0.2408 & 0.6152 & 1.0000 & 1.8808 & 11.8618 & 29.4566 & 84.0107 & 164.7858 \\
+\hline
+\end{tabular}}
+\end{table}
+
+\begin{itemize}
+	\item Fit a straight line for this data. Is it adequate?
+	\item Assume $ T_p = Ar^B $ and use logarithms to transform this relation to a linear one. Fit a straight line. Is it adequate? 
+\end{itemize}
+\end{ex}
+
+
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{Polynomial methods}
+	The linear approach is useful because of its simplicity, but it has a rather limited range of applicability, as most models cannot be developed in terms of linear functions. Thus, we will consider polynomial models.
+
+	\begin{itemize}
+		\item \textbf{Linear Polynomials}. There is a unique line passing through a pair $ (x_1,y_1), (x_2,y_2) $ of points. Algebraically, let $ y=a_0+a_1x $ be this line. The requirement of this line passing throught these points imply the following relations
+			$$ y_1=a_0+a_1x_1,\quad y_2=a_0+a_1x_2.$$ 
+			This system can be written as
+			$$ \begin{pmatrix}
+				1 & x_1 \\
+				1 & x_2 \\
+			\end{pmatrix} \begin{pmatrix}
+				a_0\\ a_1
+			\end{pmatrix} = \begin{pmatrix}
+				y_1 \\ y_2
+			\end{pmatrix},$$ 
+			and this can be inverted (almost always) in order to find $ a_0,a_1 $, \textit{a.k.a.,} the line, which is  
+			$$ P_1(x)= y_1 \frac{x-x_2}{x_1-x_2}+ y_2 \frac{x-x_1}{x_2-x_1}. $$ 
+		\item \textbf{Non-Linear Polynomials}. Now, if we have a set $ \mathcal{P}= \left\{ (x_,y_0),(x_1,y_1),\dots,(x_n,y_n) \right\}  $ of $ n +1$ points, there is (almost always) a polynomial of degree $ n $ passing through these points, and it has the form 
+			$$ P_n(x)= y_0 L_0(x)+y_1 L_1(x)+\dots+y_n L_n(x), $$ with
+			$$ L_k(x)= \prod_{i=0,i\neq k}^n \frac{x-x_i}{x_k-x_i}. $$ 
+
+	\end{itemize}
+
+	One of the main advantages of exact polynomial models are that they are easily differentiated and integrated. Nevertheless, they are often not very useful, because slight deviations of the data tend to change the trend of the polynomial.
+	\vspace{3cm}
+
+	The solution to this problem usually implies working with reduced polynomial models, like \textbf{linear models}.
+	\begin{figure}[]
+		\centering
+		\includegraphics[width=0.58\textwidth]{images/noise.png}
+		\caption{Exact polynomial models of 7th order for six cases of data points. The data points are given by dots. The polynomial models are given by lines. All the curves pass exactly through the data points. The arrows in 
+(e) and (f) indicate the position of incorrect values. }
+		\label{fig:images-noise-png}
+	\end{figure}
+
+	Consider the development of the world population in time from 1804--2050 according to the Decennial Censuses, U.S. Census Bureau, U.S. Dept. of Commerce (World Almanac 2010). The population $P$ is measured in $10^9$ and $t$ refers to the year. The last two population values are projections.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{cccccccccc}
+\hline
+$t$ & 1804 & 1927 & 1960 & 1974 & 1987 & 1999 & 2009 & 2025 & 2050 \\
+\hline
+$P$ & 1.0 & 2.0 & 3.0 & 4.0 & 5.0 & 6.0 & 6.77 & 7.95 & 9.32 \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{enumerate}[a)]
+\item Use the data from 1804 to 2009 to define an exact polynomial of sixth order. Graph this polynomial and the data. Comment on the suitability of this model.
+
+\item Use the data from 1960 to 2009 to define an exact polynomial of fourth order. Graph this polynomial and the data. Comment on the suitability of this model.
+
+\item Use the data at 1960, 1987, and 2009 to define a polynomial of second order. Graph this polynomial and the data. Comment on the suitability of this model.
+
+\item Use the 1960 and 2009 data to define a polynomial of first order. Graph this polynomial and the data. Comment on the suitability of this model.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{The Best Line}
+	Now that we are again interested in lines, we look for the \textbf{best possible line} fitting a set of data $ \mathcal{D}= \left\{ (\boldsymbol{x}_i,y_i ) \ : \ i=1,2,\dots,n \right\}  $, with $ \boldsymbol{x}_i\in\mathbb{R}^m  $. Such a line should minimize the error function
+	$$ f = ( \boldsymbol{y} - \boldsymbol{y}^{(mod)}  )^T( \boldsymbol{y} - \boldsymbol{y}^{(mod)}  ), $$ where $ \boldsymbol{y} = (y_1,\dots,y_n) $ is the vector of the dependent variable, and $ \boldsymbol{y}^{(mod)} $  is the vector of predicted values. Now, we take a linear model, so that 
+	$$ \boldsymbol{y}^{(mod)} = X \boldsymbol{a},  $$ 
+	where $ X \in M_{n\times(m+1)} $ has in each row the $ \boldsymbol{x}_i $'s with a one appended (accounting for the bias term), while $ \boldsymbol{a}\in \mathbb{R}^{m+1}  $  is the vector of parameters of the model.
+\newpage
+	Then, we can show that the best selection of parameters (minimizing $ f $) satisfies
+	$$ a= \left( X^TX \right)^{-1}X^T \boldsymbol{y}.$$ 
+
+	And how do we test if our linear model is accurate? We expect that each component of 
+
+	$$ \boldsymbol{e} = \left( \boldsymbol{y} - \boldsymbol{y}^{mod} \right)/ \boldsymbol{y}^{(mod)}    $$ 
+	is normally distributed around $ 0 $ with a ``small" variance, \textit{i.e.,} $$ \boldsymbol{e}\sim N(\boldsymbol{0}, \sigma^2 I ).$$ Other situations may indicate that the best model is not linear, and we may need to find other (composite) variables to explain the data tendency.
+
+	Returning to the optimal selection of parameters, the naive complexity order of calculating
+	$$ a= \left( X^TX \right)^{-1}X^T \boldsymbol{y}$$ 
+	is $ \mathcal{O} \left( (m+1)(n+m+1)^2 \right)  $, which is generally unbearable when either $ n $ or $ m $ is large. Then, one generally uses numerical methods like
+
+	\textbf{Gradient Descent.} Simply follow the direction of $$ -\nabla_a f=2X^T \left( \boldsymbol{y} -Xa \right). $$ 
+
+	The algorithm is as follows.
+	\begin{algorithmic}[1]
+		\Require Training data $X$, target values $\boldsymbol{y} $, learning rate $\alpha$, number of iterations $n_{iters}$, tolerance $\epsilon$
+\Ensure Optimized parameters $a$
+\State Initialize $a$ randomly or with zeros
+\State $n \gets $ number of training examples
+\State $prev\_cost \gets \infty$
+\For{$i = 1$ to $n_{iters}$}
+\State $h \gets Xa$ \Comment{Compute predictions}
+\State $gradient \gets \frac{1}{n} X^T (h - y)$ \Comment{Compute gradient}
+\State $a \gets a - \alpha \cdot gradient$ \Comment{Update parameters}
+\State $cost \gets \frac{1}{2n} \sum_{j=1}^m (h_j - y_j)^2$ \Comment{Compute cost}
+
+\If{$|prev\_cost - cost| < \epsilon$}
+    \State \textbf{break} \Comment{Convergence reached}
+\EndIf
+
+\State $prev\_cost \gets cost$
+\EndFor
+\State\Return $a$
+\end{algorithmic}
+\end{frame}
+\begin{frame}[fragile]{Example}
+The complexity order of this algorithm is $ \mathcal{O}(n_{iter}(m+1)n) $, which is generally faster than the explicit determination whenever $ n_{iter}< n. $  
+
+Let us work with the following example:
+
+\begin{lstlisting}[language=Python]
+from sklearn import datasets
+# Diabetes dataset
+diabetes = datasets.load_diabetes()
+\end{lstlisting}
+
+Now, how we test if a variable is really relevant to explain the change in the dependent variable? We use the \textbf{t-test.}
+\end{frame}
+
+\begin{frame}
+\frametitle{T-test in Simple Linear Regression}
+\framesubtitle{Model and Hypotheses}
+
+\begin{itemize}
+    \item Simple Linear Regression Model:
+    \[ Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i \]
+    \item Hypotheses:
+    \begin{align*}
+    H_0&: \beta_1 = 0 \\
+    H_1&: \beta_1 \neq 0
+    \end{align*}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+\frametitle{T-test in Simple Linear Regression}
+
+\begin{itemize}
+    \item T-statistic:
+    \[ t = \frac{\hat{\beta_1}}{SE(\hat{\beta_1})} \]
+    \item Standard Error:
+    \[ SE(\hat{\beta_1}) = \sqrt{\frac{\sum_{i=1}^n (Y_i - \hat{Y_i})^2 / (n-2)}{\sum_{i=1}^n (X_i - \bar{X})^2}} \]
+    \item Degrees of Freedom: $df = n - 2$
+\end{itemize}
+
+\begin{itemize}
+    \item P-value (two-tailed test):
+    \[ p\text{-value} = 2 \cdot P(T > |t|) \]
+    where $T \sim t(df)$
+    \item Confidence Interval ($(1-\alpha)$):
+    \[ \hat{\beta_1} \pm t_{\alpha/2, df} \cdot SE(\hat{\beta_1}) \]
+\end{itemize}
+
+\begin{itemize}
+    \item Decision Rule: Reject $H_0$ if $|t| > t_{\alpha/2, df}$ or if $p\text{-value} < \alpha$
+    \item Interpretation:
+    \begin{itemize}
+        \item Small p-value ($< \alpha$): Evidence against $H_0$
+        \item Large $|t|$: Stronger evidence of relationship
+        \item CI not including 0: Significant at $\alpha$ level
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,allowframebreaks]
+	\frametitle{In Python}
+	\begin{lstlisting}[language=Python]
+import statsmodels.api as sm
+import numpy as np
+import pandas as pd
+
+# Assume you have your data in X (features)
+# and y (target)
+# X should be a 2D array or DataFrame, 
+# y should be a 1D array or Series
+
+# Add a constant term to the features 
+X = sm.add_constant(X)
+# Fit the model
+model = sm.OLS(y, X).fit()
+
+# Print out the statistics
+print(model.summary())	
+# Coefficients
+coefficients = model.params
+# Standard errors
+std_errors = model.bse
+# t-values
+t_values = model.tvalues
+# p-values
+p_values = model.pvalues
+# Confidence intervals
+conf_int = model.conf_int()
+\end{lstlisting}
+	
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{Dimension}
+	We are generally interested in variables that can be observed. The most basic property of such variables is that they have a dimension.
+	\begin{table}[htbp]
+\centering
+\caption{Dimensions of physical variables in the LMT system}
+\label{tab:lmt_dimensions}
+\begin{tabular}{|l|l||l|l|}
+\hline
+Variable & Dimension & Variable & Dimension \\
+\hline
+Mass & M & Work & M L$^2$ T$^{-2}$ \\
+Length & L & Pressure & M L$^{-1}$ T$^{-2}$ \\
+Time & T & Power & M L$^2$ T$^{-3}$ \\
+Frequency & T$^{-1}$ & Angle & M$^0$ L$^0$ T$^0$ \\
+Velocity & L T$^{-1}$ & Velocity of sound & L T$^{-1}$ \\
+Acceleration & L T$^{-2}$ & Density & M L$^{-3}$ \\
+Force & M L T$^{-2}$ & Dynamic viscosity & M L$^{-1}$ T$^{-1}$ \\
+Energy & M L$^2$ T$^{-2}$ & Kinematic viscosity & L$^2$ T$^{-1}$ \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/airplane.png}
+	\caption{An illustration of factors that affect the lift force of aircrafts.}
+	\label{fig:images-airplane-png}
+\end{figure}
+$$ F_L = F_L(v,d_1,d_2,\theta,\rho,\mu,s). $$ 
+$$ F_L\sim \frac{ML}{T^2} \sim \frac{M}{L^3} \frac{L^2}{T^2} L^2 \sim \frac{C_L}{2}\rho v^2 d_2^2.$$ 
+$C_L$ is called lift coefficient. \newpage
+
+$ p =\rho v^2/2 $ is called dynamic pressure, so that the previous relation can be written as $$ F_L=C_L p d_2^2. $$  
+
+Are the other variables irrelevant? \textbf{No}. They may be summarized in $ C_L $, \textit{i.e.,} $$ C_L =C_L(\theta, \frac{d_1}{d_2}, \frac{v}{s},\dots ). $$  
+Thus, a dimensionally correct equation for $ F_l $ can be written as a relation between nondimensional products,
+$$  \frac{F_L}{\rho v^2 d_2^2} =  \frac{1}{2}C_L(\theta, \frac{d_1}{d_2}, \frac{v}{s},\dots ).   $$ 
+Using the following abbreviations for the nondimensional products involved in the previous equation,
+$$ P_1 = \frac{F_L}{\rho v^2 d_2^2},\quad P_2=\theta,\quad P_3= \frac{d_1}{d_2},\quad P_4= \frac{v}{s}, $$ 
+we get the following relation
+$$ P_1 = f(P_2,P_3,P_4,\dots). $$ 
+\begin{tcolorbox}[colback=lightgray!5!white,colframe=black,title=Buckingham Theorem]
+If a physical process satisfies dimensional homogeneity and involves $n$ physical variables that can be expressed in terms of $k$ independent fundamental dimensions, then the process can be described by a set of $p = n - k$ dimensionless parameters $\Pi_1, \Pi_2, \ldots, \Pi_p$, such that:
+$$f(\Pi_1, \Pi_2, \ldots, \Pi_p) = 0,$$
+where $f$ is some function of the $p$ dimensionless parameters.
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{Dimensional Analysis}
+	Consider the following general product involving variables that may affect $ F_L, $ 
+	$$ F_L^av^bd_1^cd_2^d\theta^e\rho^f\mu^gs^h. $$ 
+	$ a,b,c,d,e,f,g,h\in \mathbb{R} $ are unknown. The conditions for having a nondimensional product is then
+	$$ F_L^av^bd_1^cd_2^d\theta^e\rho^f\mu^gs^h=c_1, $$ 
+	where $ c_1 $ is any constant that is independent of $ L, M $ and $ T. $  Thus,
+	$$ [MLT^{-2}]^a [LT^{-1}]^b [L]^c [L]^d [L^0]^e [ML^{-3}]^f [ML^{-1}T^{-1}]^g [LT^{-1}]^h = c_2, $$ 
+	or equivalently,
+	$$ M^{a+f+g} L^{a+b+c+d-3f-g+h} T^{-2a-b-g-h} = c_2.$$ 
+	This leads to the following system of equations:
+	\begin{align*}
+    \text{For M:} \quad & a + f + g = 0 \\
+    \text{For L:} \quad & a + b + c + d - 3f - g + h = 0 \\
+    \text{For T:} \quad & -2a - b - g - h = 0
+\end{align*}
+
+Let $ b,d $ and $f$ be the dependent variables, so that $ a,c,e,g $ and $ h $ are the independent ones. Solving for the dependent ones gives
+\begin{align*}
+	d=&-2a-c-g,\\
+	f=&-a-g,\\
+	b=&-2a-g-h.
+\end{align*}
+The use of these expressions then provides
+$$ F_L^a v^{-2a-g-h}d_1^cd_2^{-2a-c-g}\theta^e\rho^{-a-g}\mu^g s^h =c_1, $$ 
+or 
+$$ \left( \frac{F_L}{\rho v^2 d_2^2} \right)^a \left( \frac{d_1}{d_2} \right)^c \theta^e \left( \frac{\mu}{\rho d_2 v} \right)^g \left( \frac{s}{v} \right)^h = c_1. $$ 
+Five composite variables, as expected from Buckingham's Theorem. Of course, choosing different dependent variables when solving the linear relation will lead to different composite variables.
+Let us see further examples.
+
+\textbf{Reaction distance.} Find a relation between the driver's reaction time $ T_R $, the vehicular velocity $ v $ and the reaction distance $ D_R. $   
+
+\textbf{Braking Distance.} Find a relation for the braking distance $ D_B $ having in mind that it is determined by the brake force $ F_B ,$ the vehicular velocity $ v $ and the mass of the vehicle $ m $.
+\end{frame}
+\end{document}  
+	
